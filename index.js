@@ -27,21 +27,24 @@ fs.readFile("data/input.csv", 'utf8', function(err, fileContents){
 			return recordObj;
 		}
 
+		// convert parsed CSV data to a Recipies object
 		var data = parsedCsv.slice(1).map(function(val){
 			return toJson(parsedCsv[0], val);
 		});
 
-		startupServer(api, data);
+		startupServer(api, new Recipes(Recipe, data));
 	})
 });
 
 
 /*
- * Starts up blank express app "api" with preloaded data "data"
+ * Starts up blank express app "api" with preloaded recipies
+ * @param express Express application
+ * @param {Recipies} recipies Recipies collection
  */
-var startupServer = function(api, data) {
+var startupServer = function(api, recipes) {
 	api.get('/printAll', function(req, res){
-		res.send({what:data});
+		res.send({what:recipes});
 	});
 
 	api.get('/sayHello', function(req, res){
@@ -49,7 +52,28 @@ var startupServer = function(api, data) {
 	});
 
 	api.get('/fetchById', function(req, res){
-		res.send({what:"yo!"});
+		var found = recipes.fetchBy('id',req.query['id']).export()[0];
+		res.send(found);
+	});
+
+	api.get('/fetchByCuisine', function(req, res){
+		var found = recipes.fetchBy('recipe_cuisine',req.query['cuisine']).export();
+		res.send(found);
+	});
+
+	api.post('/rateRecipe', function(req, res, next){
+	    var bodyStr = '';
+	    req.on("data",function(chunk){
+	        bodyStr += chunk.toString();
+	    });
+	    req.on("end",function(){
+	    	var recipe = recipes.fetchBy('id', req.query['id']).recipes[0];
+	    	if(recipe instanceof recipes.itemClass) {
+				recipe.rate(parseInt(bodyStr));	    		
+		        res.send({status:'OK'});
+	    	}
+	    	next();
+	    });
 	});
 
 	api.listen(80, function () {
