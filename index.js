@@ -1,34 +1,18 @@
+'use strict';
 
+var express = require('express');
+var Recipes = require('./lib/Recipes.js');
+var Recipe = require('./lib/Recipe.js');
 
-var Recipe = function(properties) {
+var goustoAPI = express();
 
-}
-/*
- * @param {Integer} score Integer from 1 to 5
- */
-Recipe.prototype.rate = function(score) {
+goustoAPI.get('/fetchById', function(req, res){
+	res.send({what:"yo!"});
+});
 
-}
-/*
- * @param {Object} properties Collection of properties to update
- */
-Recipe.prototype.update = function(properties) {
-
-}
-
-var Recipes = function(arrayOfRecipes) {
-
-}
-/*
- * @return {Recipes}
- */
-Recipes.prototype.fetchBy = function(propertyName, propertyValue) {
-
-}
-Recipes.prototype.append = function(recipe) {
-
-}
-
+goustoAPI.listen(80, function () {
+  console.log('Listening');
+});
 
 //=============================
 
@@ -36,18 +20,18 @@ Recipes.prototype.append = function(recipe) {
 
 // Retrieve
 fetchById
-	GET: id, properties
+	PARAMS: id, properties
 	RETURNS: Recipe
 fetchByCuisine
-	GET: cuisine, properties
+	PARAMS: cuisine, properties
 	RETURNS: array of Recipe
 
 // Update
 rateRecipe
-	GET: id
+	PARAMS: id
 	POST: int score
 updateRecipe
-	GET: id
+	PARAMS: id
 	POST: Recipe
 
 // Create
