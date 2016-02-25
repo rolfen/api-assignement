@@ -2,12 +2,17 @@
 
 var fs = require('fs');
 var express = require('express');
+var expressBodyParser = require('body-parser');
+
 var Recipe = require('./lib/Recipe.js');
 var Recipes = require('./lib/Recipes.js');
 
 var parse = require('csv-parse');
 
+var express = require('express');
+
 var api = express();
+api.use(expressBodyParser.json());
 
 // load data
 fs.readFile("data/input.csv", 'utf8', function(err, fileContents){
@@ -36,6 +41,24 @@ fs.readFile("data/input.csv", 'utf8', function(err, fileContents){
 	})
 });
 
+/*
+funtion processPost(callback) {
+	return(function(req, res, next){
+		var bodyStr = '';
+		req.on("data", function(chunk){
+			bodyStr += chunk.toString();
+		});
+		req.on("end", function(){
+			console.dir(bodyStr);
+			// var newRecipe = recipes.append()
+			// if() {
+			    res.send({id: 1});				
+			// }
+			// next();
+		});		
+	})
+}
+*/
 
 /*
  * Starts up blank express app "api" with preloaded recipies
@@ -70,10 +93,25 @@ var startupServer = function(api, recipes) {
 	    	var recipe = recipes.fetchBy('id', req.query['id']).recipes[0];
 	    	if(recipe instanceof recipes.itemClass) {
 				recipe.rate(parseInt(bodyStr));	    		
-		        res.send({status:'OK'});
+		        res.send();
 	    	}
-	    	next();
+	    	// next();
 	    });
+	});
+
+	api.post('/newRecipe', function(req, res, next){
+		var bodyStr = '';
+		req.on("data", function(chunk){
+			bodyStr += chunk.toString();
+		});
+		req.on("end", function(){
+			console.dir(bodyStr);
+			// var newRecipe = recipes.append()
+			// if() {
+			    res.send({id: 1});				
+			// }
+			// next();
+		});
 	});
 
 	api.listen(80, function () {
@@ -103,7 +141,7 @@ updateRecipe
 	POST: Recipe
 
 // Create
-storeNewRecipe
+newRecipe
 	POST: Recipe
 	RETURNS: id of new recipe
 

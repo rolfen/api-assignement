@@ -9,6 +9,10 @@ var request = require('unirest');
 var baseUrl = "http://127.0.0.1";
 
 var runTests = function() {
+	// config
+	// request.encoding('utf-8');
+	request.type('application/json');
+
 	// self-test
 	request.get(baseUrl + '/sayHello').end(function(res){
 	  	res.body.should.eql({what:'hello'});
@@ -27,6 +31,15 @@ var runTests = function() {
 	});
 
 	// Store a new recipe
+	request.post(baseUrl + '/newRecipe').send({
+		title:"New Veggie", 
+		box_type:"Vegan",
+		preparation_time_minutes: 30
+	}).end(function(res){
+		res.body.id.should.be.a.Number();
+		res.body.id.should.be.greaterThan(0);
+	})
+
 	// Update an existing recipe
 
 	// Rate an existing recipe between 1 and 5
