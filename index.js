@@ -2,8 +2,8 @@
 
 var fs = require('fs');
 var express = require('express');
-var Recipes = require('./lib/Recipes.js');
 var Recipe = require('./lib/Recipe.js');
+var Recipes = require('./lib/Recipes.js');
 
 var parse = require('csv-parse');
 
@@ -45,7 +45,7 @@ var startupServer = function(api, data) {
 	});
 
 	api.get('/sayHello', function(req, res){
-		res.send({what:data});
+		res.send({what:'hello'});
 	});
 
 	api.get('/fetchById', function(req, res){
@@ -64,10 +64,10 @@ var startupServer = function(api, data) {
 
 // Retrieve
 fetchById
-	PARAMS: id, properties
+	PARAMS: id
 	RETURNS: Recipe
 fetchByCuisine
-	PARAMS: cuisine, properties
+	PARAMS: cuisine, pageSize, page
 	RETURNS: array of Recipe
 
 // Update
