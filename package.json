@@ -9,11 +9,8 @@
   "author": "Rolf Dergham",
   "license": "ISC",
   "devDependencies": {
-    "should": "^8.2.2",
-    "unirest": "^0.4.2"
   },
   "dependencies": {
-    "body-parser": "^1.15.0",
     "csv-parse": "^1.0.2",
     "express": "^4.13.4"
   }
