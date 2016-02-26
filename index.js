@@ -2,17 +2,29 @@
 
 var fs = require('fs');
 var express = require('express');
-var expressBodyParser = require('body-parser');
 
 var Recipe = require('./lib/Recipe.js');
 var Recipes = require('./lib/Recipes.js');
 
 var parse = require('csv-parse');
 
-var express = require('express');
-
 var api = express();
-api.use(expressBodyParser.json());
+
+// our POST parsing middleware
+api.use(function(req, res, next){
+	var bodyStr = '';
+	req.on("data", function(chunk){
+		bodyStr += chunk.toString();
+	});
+	req.on("end", function(){
+		try {
+			req.body = JSON.parse(bodyStr)
+		} catch(e) {
+			req.body = bodyStr;
+		}
+		next();
+	});
+});
 
 // load data
 fs.readFile("data/input.csv", 'utf8', function(err, fileContents){
@@ -41,24 +53,6 @@ fs.readFile("data/input.csv", 'utf8', function(err, fileContents){
 	})
 });
 
-/*
-funtion processPost(callback) {
-	return(function(req, res, next){
-		var bodyStr = '';
-		req.on("data", function(chunk){
-			bodyStr += chunk.toString();
-		});
-		req.on("end", function(){
-			console.dir(bodyStr);
-			// var newRecipe = recipes.append()
-			// if() {
-			    res.send({id: 1});				
-			// }
-			// next();
-		});		
-	})
-}
-*/
 
 /*
  * Starts up blank express app "api" with preloaded recipies
@@ -84,34 +78,17 @@ var startupServer = function(api, recipes) {
 		res.send(found);
 	});
 
-	api.post('/rateRecipe', function(req, res, next){
-	    var bodyStr = '';
-	    req.on("data",function(chunk){
-	        bodyStr += chunk.toString();
-	    });
-	    req.on("end",function(){
-	    	var recipe = recipes.fetchBy('id', req.query['id']).recipes[0];
-	    	if(recipe instanceof recipes.itemClass) {
-				recipe.rate(parseInt(bodyStr));	    		
-		        res.send();
-	    	}
-	    	// next();
-	    });
+	api.post('/rateRecipe', function(req, res){
+    	var recipe = recipes.fetchBy('id', req.query['id']).recipes[0];
+    	if(recipe instanceof recipes.itemClass) {
+			recipe.rate(req.body.rating);
+	        res.send({rating:req.body.rating});
+    	}
 	});
 
 	api.post('/newRecipe', function(req, res, next){
-		var bodyStr = '';
-		req.on("data", function(chunk){
-			bodyStr += chunk.toString();
-		});
-		req.on("end", function(){
-			console.dir(bodyStr);
-			// var newRecipe = recipes.append()
-			// if() {
-			    res.send({id: 1});				
-			// }
-			// next();
-		});
+		var newRecipe = recipes.append()
+	    res.send({id: 1});				
 	});
 
 	api.listen(80, function () {
