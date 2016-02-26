@@ -22,6 +22,44 @@ Once the server is running, the test script can be run against it with any of th
 
 The server will run on port 8808 by default. This can be changed in 'config.js'.
 
+## About the Code
+
+There are three files in the lib/ folder.
+
+### Recipe.js
+
+This is the Recipe object, with methods to update and add a rating. Ratings are kept in an array on the object, in the data.ratings property.
+The Recipe object tries to keep `created_at` and `updated_at` timestamps up-to-date.
+
+### Recipes.js
+
+The Recipes object has methods to filter and manage a collection of recipes.The `append()` method automatically generates an ID if needed, and tries to keep IDs unique if it is given one. Recipes with conflicting IDs cannot be appended.
+
+### Api.js
+
+Provides a helper function for sending requests to the API, for testing.
+
+POST Example:
+
+
+    api('/updateRecipe?id=3', function(response){
+        // Do something with the server response. It will normally be a parsed JSON object.
+      },{method:'POST'},{
+        // Update these recipe properties
+        title:"New Veggie" 
+      }
+    );
+
+If not specified, method will default to GET:
+
+
+    api('/fetchById?id=4', function(response){
+       // Do somethin with the server response.
+    });
+
+
+
+For more details feel free to look at the comments inside these files.
 
 ## About the Choices
 
