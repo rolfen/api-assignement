@@ -89,15 +89,18 @@ var runTests = function() {
 
 	// check pagination
 	(function(){
-		// create some recipies
+		// create some recipes
+		var varNum = Math.floor(Math.random() * 100);
 		['R1','R2','R3','R4','R5'].forEach(function(name, i, arr){
-			var data = {recipe_cuisine: 'kentish'};
+			var data = {recipe_cuisine: 'kentish'+varNum};
 			data.title = name;
 			api('/newRecipe', function(reponse){
 				if(i === (arr.length-1)) {
-					// last one
-					api('/fetchByCuisine?cuisine=kentish&page_size=3&page=1', function(resp){
+					// This was the last one, now fetch a page and check it
+					api('/fetchByCuisine?cuisine=kentish'+varNum+'&page_size=3&page=1', function(resp){
 						assertEql(resp.length, 2);
+						assertEql(resp[0].title, "R4");
+						assertEql(resp[1].title, "R5");
 					});
 				}
 			}, {method:'POST'}, data)

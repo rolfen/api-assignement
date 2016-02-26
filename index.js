@@ -74,8 +74,16 @@ var startupServer = function(api, recipes) {
 	});
 
 	api.get('/fetchByCuisine', function(req, res){
-		var found = recipes.fetchBy('recipe_cuisine',req.query['cuisine']).export();
-		res.send(found);
+		var found = recipes.fetchBy('recipe_cuisine',req.query.cuisine).export();
+		if(req.query.page_size && req.query.page_size > 0) {
+			var pageSize = parseInt(req.query.page_size);
+			var pageNum = (typeof req.query.page != 'undefined') ? parseInt(req.query.page) : 0;
+			var pageStart = pageNum * pageSize;
+			var pageEnd = pageStart + pageSize;
+			res.send(found.slice(pageStart, pageEnd));
+		} else {
+			res.send(found);
+		}
 	});
 
 	api.post('/rateRecipe', function(req, res){
