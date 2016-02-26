@@ -81,39 +81,39 @@ POST and response data should be in JSON and be encoded in UTF-8.
 ### Retrieve
 
     fetchById
-	    QUERY: int id
-	    RETURNS: Recipe
+	    QUERY:
+            id: Numerical recipe id
+	    RETURNS: Recipe object
 
     fetchByCuisine
-	    QUERY: string cuisine
-	    RETURNS: array of Recipe
+	    QUERY: 
+            cuisine: Name of the cuisine
+            page_size: Optional, number of recipes per page. Defaults to 0 which disables pagination.
+            page: Optional, current page. Defaults to 0.
+	    RETURNS: array of Recipes
     
 ### Update
 
     rateRecipe
-	    QUERY: int id
+	    QUERY: id
 	    POST: {rating: <score>}, score being an int between 0 and 5
 
     updateRecipe
-	    QUERY: {id: <id>}
-	    POST: Recipe
+	    QUERY: id
+	    POST:  A key/value object of properties to update, Example:
+            For example: {
+                id: 12,
+                title: "Hello",
+                fat_grams: 12
+            }
+
     
 ### Create
 
     newRecipe
-	    POST: Recipe
+	    POST: A key/value object of properties
 	    RETURNS: {id: <id>}, id of new recipe on success
 
-
-### Data format
-
-A "Recipe" in this context is just an object containing some or all of the visible properties of a recipe. Exampe of a partial representation:
-
-    {
-        id: 12,
-        title: "Hello",
-        fat_grams: 12
-    }
 
 ### ToDo
 
