@@ -98,13 +98,14 @@ var startupServer = function(api, recipes) {
 
 	api.post('/updateRecipe', function(req, res, next){
     	var recipe = recipes.fetchBy('id', req.query['id']).recipes[0];
+    	debugger;
 		recipe.update(req.body);
 		res.send({id: req.query['id']})		
 	});
 
 	api.post('/newRecipe', function(req, res, next){
-		var newRecipe = recipes.append(req.body)
-	    res.send({id: 1});				
+		var newId = recipes.append(req.body)
+	    res.send({id: newId});				
 	});
 
 	api.listen(config.port, function () {

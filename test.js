@@ -74,6 +74,20 @@ var runTests = function() {
 		recipe_cuisine: 'rolfian'
 	});
 
+	// Should not store duplicate ID
+
+	api('/newRecipe', function(response){
+		api('/fetchByCuisine?cuisine=nevernever12', function(resp){
+			assert(resp.length === 0);
+		});
+	},{method:'POST'},{
+		id:1,
+		title:"New Meatie", 
+		box_type:"Carnivorous",
+		preparation_time_minutes: 12,
+		recipe_cuisine: 'nevernever12'
+	});
+
 	// Rate an existing recipe between 1 and 5
 
 	var randRating = Math.ceil(Math.random() * 5);
