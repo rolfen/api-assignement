@@ -1,4 +1,4 @@
 module.exports = {
 	// Port on which the server would run
-	port: 808
+	port: 8808
 }
