@@ -3,9 +3,20 @@
 var http = require('http');
 var api = require('./lib/Api.js');
 
+// the test error handler
+var error = function(e) {
+	try {
+		throw new Error(e);		
+	} catch(e) {
+		throw e;
+	} finally {
+		runTests();
+	}
+}
+
 var assert = function(test) {
 	if(!test) {
-		throw new Error("Assertion failed");
+		error("Assertion failed");
 	}
 } 
 
@@ -17,7 +28,7 @@ var assertEql = function(a, b) {
 			a: a,
 			b: b
 		})
-		throw new Error(errMsg);
+		error(errMsg);
 	}
 }
 
@@ -46,7 +57,7 @@ var runTests = function() {
 	api('/newRecipe', function(response){
 		// must return id of newly created recipe
 		if(!(response.id && typeof response.id == 'number' && response.id > 0)) {
-			throw new Error("Test failed: expected recipe id, got " + response.id);
+			error("Test failed: expected recipe id, got " + response.id);
 		}
 		// check if a recipe was stored
 		api('/fetchByCuisine?cuisine=rolfian', function(resp){
@@ -58,6 +69,23 @@ var runTests = function() {
 		preparation_time_minutes: 30,
 		recipe_cuisine: 'rolfian'
 	});
+
+	// Rate an existing recipe between 1 and 5
+	var randRating = Math.ceil(Math.random() * 5);
+	api('/rateRecipe?id=7', function(response){
+		// check if it's saved last
+		api('/fetchById?id=7',function(res){
+			assertEql(res.ratings[res.ratings.length-1],randRating);
+		});
+	},{method:'POST'},{rating:randRating})
+
+	// Update an existing recipe
+	api('/updateRecipe?id=1', function(){
+		// check if it's been updated
+		api('/fetchById?id=1',function(res){
+			assertEql(res.recipe_cuisine,'lithuanian');
+		});
+	},{method:'POST'},{recipe_cuisine:'lithuanian'});
 
 	// check pagination
 	(function(){
@@ -75,20 +103,6 @@ var runTests = function() {
 			}, {method:'POST'}, data)
 		})
 	})()
-
-	// Rate an existing recipe between 1 and 5
-	api('/rateRecipe?id=7', function(response){
-		api('/fetchById?id=7',function(res){
-			assertEql(res.ratings[res.ratings.length-1],4);
-		});
-	},{method:'POST'},{rating:4})
-
-	// Update an existing recipe
-	api('/udpateRecipe?id=1', function(response){
-		api('/fetchById?id=1',function(res){
-			assertEql(res.recipe_cuisine,'lithuanian');
-		});
-	},{method:'POST'},{recipe_cuisine:'lithuanian'});
 
 	console.log("End reached");
 }

@@ -87,6 +87,7 @@ var startupServer = function(api, recipes) {
 	});
 
 	api.post('/updateRecipe', function(req, res, next){
+		// debugger;
     	var recipe = recipes.fetchBy('id', req.query['id']).recipes[0];
 		recipe.update(req.body);
 		res.send({id: req.query['id']})		
