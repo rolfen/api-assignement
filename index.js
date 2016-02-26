@@ -108,7 +108,7 @@ var startupServer = function(api, recipes) {
 	});
 
 	api.listen(config.port, function () {
-	  console.log('Listening');
+	  console.log('Listening on port ' + config.port);
 	});
 }
 
