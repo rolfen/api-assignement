@@ -3,16 +3,8 @@
 var config = require('./config.js');
 var http = require('http');
 
-var apiFactory = require('./lib/Api.js');
-var api = apiFactory({
-	host: 'localhost',
-	port: config.port,
-	method: "GET",
-	headers: {
-	    accept: 'application/json',
-	    encoding: 'utf-8'
-	}
-});
+var api = require('./lib/Api.js');
+
 
 // the test error handler
 var error = function(e) {
