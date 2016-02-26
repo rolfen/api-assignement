@@ -3,6 +3,12 @@
 var http = require('http');
 var api = require('./lib/Api.js');
 
+var assert = function(test) {
+	if(!test) {
+		throw new Error("Assertion failed");
+	}
+} 
+
 var assertEql = function(a, b) {
 	if(JSON.stringify(a) !== JSON.stringify(b)) {
 		var errMsg = "Test failed: a and b not equal";
@@ -42,9 +48,9 @@ var runTests = function() {
 		if(!(response.id && typeof response.id == 'number' && response.id > 0)) {
 			throw new Error("Test failed: expected recipe id, got " + response.id);
 		}
-		// check if recipe was stored
-		api('/fetchByCuisine?cuisine=rolfian',function(resp){
-			assertEql(1, resp.length);
+		// check if a recipe was stored
+		api('/fetchByCuisine?cuisine=rolfian', function(resp){
+			assert(resp.length > 0);
 		});
 	},{method:'POST'},{
 		title:"New Veggie", 
