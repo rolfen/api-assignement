@@ -1,4 +1,3 @@
-
 #Gousto API exercice
 
 ## Getting Started
@@ -63,21 +62,21 @@ For more details feel free to look at the comments inside these files.
 
 ## About the Choices
 
-Firstly, I chose node because it is a tool that I can know well, and a way to get started quickly. I was confident of my abilities within a given timeframe.
+Firstly, I chose node.js because it is a tool that I can know, and a way to get started quickly. I believe that node offers flexibility whilst keeping complexity low.
 
-I chose express for an easier, more elegant (less boilerplate-y) way of handling HTTP requests, and because it exposes the node HTTP request object, so it doesn't get in the way whenever low-level control is required.
+I chose express for an easier, more elegant (less boilerplate-y) and extensible way of handling HTTP requests, and because it exposes the node HTTP request object, so it doesn't get in the way whenever low-level control is required.
 
-For testing, I initially experimented with a couple of libraries for writing requests, in addition to 'should" for making assertions, but after running into some problems with documentation, I decided to write my own functions for that.
+For testing, I initially experimented with a couple of libraries for writing requests and 'should" for making assertions, but after running into some problems with documentation, I decided to write my own functions for that.
 
-Although this particular exercise could have been completed without using any frameworks at all (outside node.js), the instructions seemed to encourage using one.
+Although this particular exercise could have been completed without using any frameworks at all (outside node.js), the instructions seemed to suggest using one, to some extent.
 
-Some level of abstraction is provided by these frameworks, making it more pleasant to write and read the code. The result should also be more flexible and scalable. 
+Some level of abstraction is provided by these frameworks, making it more pleasant to write and read the code.
 
 ## Web API
 
 The API uses a combination of "query string" parameters (eg: ?id=12&title=something) and POST data.
 
-POST and response data should use JSON and be encoded in UTF-8.
+POST and response data should be in JSON and be encoded in UTF-8.
 
 ### Retrieve
 
@@ -106,9 +105,6 @@ POST and response data should use JSON and be encoded in UTF-8.
 	    RETURNS: {id: <id>}, id of new recipe on success
 
 
-(ToDo: no Delete?)
-
-
 ### Data format
 
 A "Recipe" in this context is just an object containing some or all of the visible properties of a recipe. Exampe of a partial representation:
@@ -121,9 +117,11 @@ A "Recipe" in this context is just an object containing some or all of the visib
 
 ### ToDo
 
+No Delete?
+
 It would be nice to specify the fields we want to retrieve. Different clients might be able to retrieve different fields of interest, something like that:
 
     // for space-limited mobile devices
     fetchById(12, ['id','title','description_short']) 
     // for bigger monitors
-    fetchById(12,['id','title','description_full']) 
+    fetchById(12,['id','title','description_full'])
