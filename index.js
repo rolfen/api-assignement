@@ -1,5 +1,6 @@
 'use strict';
 
+var config = require('./config.js');
 var fs = require('fs');
 var express = require('express');
 
@@ -75,6 +76,7 @@ var startupServer = function(api, recipes) {
 
 	api.get('/fetchByCuisine', function(req, res){
 		var found = recipes.fetchBy('recipe_cuisine',req.query.cuisine).export();
+		// pagination
 		if(req.query.page_size && req.query.page_size > 0) {
 			var pageSize = parseInt(req.query.page_size);
 			var pageNum = (typeof req.query.page != 'undefined') ? parseInt(req.query.page) : 0;
@@ -95,7 +97,6 @@ var startupServer = function(api, recipes) {
 	});
 
 	api.post('/updateRecipe', function(req, res, next){
-		// debugger;
     	var recipe = recipes.fetchBy('id', req.query['id']).recipes[0];
 		recipe.update(req.body);
 		res.send({id: req.query['id']})		
@@ -106,7 +107,7 @@ var startupServer = function(api, recipes) {
 	    res.send({id: 1});				
 	});
 
-	api.listen(80, function () {
+	api.listen(config.port, function () {
 	  console.log('Listening');
 	});
 }
@@ -127,7 +128,7 @@ fetchByCuisine
 // Update
 rateRecipe
 	PARAMS: id
-	POST: int score
+	POST: int score (1-5)
 updateRecipe
 	PARAMS: id
 	POST: Recipe
