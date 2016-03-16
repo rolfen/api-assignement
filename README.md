@@ -57,20 +57,19 @@ If not specified, method will default to GET:
     });
 
 
+For more details please look at the source.
 
-For more details feel free to look at the comments inside these files.
+## About the Platform Choices
 
-## About the Choices
-
-Firstly, I chose node.js because it is a tool that I can know, and a way to get started quickly. I believe that node offers flexibility whilst keeping complexity low.
+I chose node.js because it is a tool that I am familiar with, and a way to get started quickly. I believe that node offers flexibility whilst keeping complexity low, which I feel is appropriate for this task.
 
 I chose express for an easier, more elegant (less boilerplate-y) and extensible way of handling HTTP requests, and because it exposes the node HTTP request object, so it doesn't get in the way whenever low-level control is required.
 
 For testing, I initially experimented with a couple of libraries for writing requests and 'should" for making assertions, but after running into some problems with documentation, I decided to write my own functions for that.
 
-Although this particular exercise could have been completed without using any frameworks at all (outside node.js), the instructions seemed to suggest using one, to some extent.
+Although this particular exercise could have been completed without the usage of any framework outside node.js and npm, the instructions seemed to suggest using one, to some extent.
 
-Some level of abstraction is provided by these frameworks, making it more pleasant to write and read the code.
+Some amount of abstraction is provided by express, making it more pleasant to write and read the code.
 
 ## Web API
 
